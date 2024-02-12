@@ -1,0 +1,41 @@
+.WebsiteDisplay{
+    color:white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:30px;
+    padding: 130px;
+    height: 520px;
+}
+.title{
+    font-size: 50px;
+    color:black;
+    background-color: white;
+    padding: 15px;
+    max-width: 60%;
+    padding-left: 25px;
+
+}
+.content-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap:60px;
+    flex-grow: 1;
+}
+.image{
+
+    flex-grow: 1;
+    max-height: 100%;
+    border: white solid 5px;
+}
+.image img{
+    object-fit:cover;width:100%;height:100%;
+}
+.description{
+    align-self: flex-end;
+    text-align: right;
+    max-width: 20%;
+
+}

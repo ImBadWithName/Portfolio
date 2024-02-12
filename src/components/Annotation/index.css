@@ -1,0 +1,7 @@
+@font-face {
+    font-family: "Baby Doll" ;
+    src: url('/Font/Baby\ Doll.otf');
+}
+.annotation{
+    font-family: "Baby Doll";
+}

@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client'
 import { ACESFilmicToneMapping, sRGBEncoding } from 'three'
 import { Scene } from './Scene'
 import './styles/main.css'
+import GameBoyScreen from './components/GameBoyScreen'
 
 function Main() {
   return (
@@ -22,7 +23,8 @@ function Main() {
           },
         }}
       />
-      <Canvas
+        <Canvas
+
         dpr={[1, 2]}
         gl={{
           antialias: true,
@@ -38,7 +40,9 @@ function Main() {
         shadows
       >
         <Scene />
-      </Canvas>
+        {/* <fog attach="fog" args={['pink', 5, 30]} /> */}
+      </Canvas>  
+      {/* <GameBoyScreen/> */}
     </div>
   )
 }

@@ -1,12 +1,11 @@
 function Plane() {
   return (
     <mesh
-      rotation-x={-Math.PI / 2}
-      position={[0, -1, 0]}
-      scale={[10, 10, 10]}
+      position={[0, -1.5, 0]}
+      
       receiveShadow
     >
-      <planeGeometry />
+      <boxGeometry args={[10, 1, 10]} />
       <meshStandardMaterial color='greenyellow' />
     </mesh>
   )
