@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@react-spring/three": "^9.7.3",
-    "@react-three/drei": "^9.70.1",
+    "@react-three/drei": "^9.105.2",
     "@react-three/fiber": "^8.13.0",
     "@react-three/rapier": "^1.1.1",
     "@types/three": "^0.152.1",
