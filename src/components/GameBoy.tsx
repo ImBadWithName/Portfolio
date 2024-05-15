@@ -43,11 +43,8 @@ export const GameBoy = forwardRef<THREE.Group, JSX.IntrinsicElements["group"]>((
         position={[0, 0.85, 0.9]}
         distanceFactor={1}
         zIndexRange={[1000,1500]}
-
          as="div"
         // occlude
-        // rotation={[0,Math.PI/2,0]}
-
         >
           {props.children}
         </Html> 

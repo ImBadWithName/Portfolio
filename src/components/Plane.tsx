@@ -1,12 +1,12 @@
 function Plane() {
   return (
     <mesh
-      position={[0, -1.5, 0]}
-      
+      position={[0, -1.05, -2.1]}
+      visible={false}
       receiveShadow
     >
-      <boxGeometry args={[10, 1, 10]} />
-      <meshStandardMaterial color='greenyellow' />
+      <boxGeometry args={[8, 0.2, 4.8]} />
+
     </mesh>
   )
 }

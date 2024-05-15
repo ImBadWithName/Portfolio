@@ -1,4 +1,4 @@
-.container{
+.container-gameBoy{
     background-color: #6FEAE6;
     width: 1440px;
     height: 1024px;
@@ -11,7 +11,7 @@
     margin-left: auto;
     margin-right: auto;
     overflow: hidden; 
-    position: absolute; 
+    position: absolute;  
 }
 .title{
     color: black;
@@ -116,13 +116,31 @@
     padding: 10px;
     position: absolute;
     font-weight: bold;
-    top:10px;
-    left: 10px;
+    top:27px;
+    left: 27px;
     font-size: 27px;
     opacity:0.8;
     display: flex;
     align-items: center;
 }
 .exit-game img{
-    height: 50px;
+    height: 60px;
+}
+.full-screen{
+    cursor: pointer;
+    border: white 5px solid;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    font-weight: bold;
+    bottom:27px;
+    right: 27px;
+    font-size: 27px;
+    opacity:0.8;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+.full-screen img{
+    height: 90px;
 }

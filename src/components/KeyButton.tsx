@@ -10,12 +10,16 @@ import { Vector3 } from 'three';
 const KeyButton = (props: JSX.IntrinsicElements["mesh"]) => {
 
     const [pressed,setPressed]= useState(false);
+    const audio = new Audio('/Sounds/KeyPress.mp3');
+    audio.loop = false
+    audio.preservesPitch = false;
+
     // const { scale } = useSpring({ scale: pressed ? 10 : 5,
     //     config: config.wobbly })
     const handleKeyDown=(e:KeyboardEvent)=>{
         if(e.code===props.name){
             setPressed(true) 
-
+            
         }
     }
     const handleKeyUp=(e:KeyboardEvent)=>{
@@ -33,6 +37,13 @@ const KeyButton = (props: JSX.IntrinsicElements["mesh"]) => {
             window.removeEventListener('keyup',(e)=>handleKeyUp(e))
         }
     })
+    useEffect(()=>{
+        if(pressed){
+            audio.playbackRate=0.7+Math.random()*0.6
+            audio.play();
+
+        }
+    },[pressed])
 
   return (
     <group position-y={pressed?-0.03:0}>

@@ -1,9 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.css'
 import GameDisplay from '../GameDisplay'
-type Props = {}
+import * as portals from 'react-reverse-portal';
+import Overlay from '../Overlay';
+type Props = {
+  focus :  boolean;
+}
 
 const GameBoyScreen = (props: Props) => {
+  const [fullScreen,setFullScreen] = useState(false)
+  const portalNode = React.useMemo(() => portals.createHtmlPortalNode(), []);
+  useEffect(()=>{
+    if(!props.focus){
+      setCurrentGame("")
+    }
+  },[props.focus])
   const games = [
     {
       name:"Gravity wars",
@@ -12,7 +23,7 @@ const GameBoyScreen = (props: Props) => {
     },{
       name:"Time & Death don't matter",
       image:"/images/GameImage/TimeAndDeath.png",
-      url:"https://i.simmer.io/@un_deux_trois/destination-nuages"
+      url:"https://i.simmer.io/@un_deux_trois/vermins-out-of-my-casino"
     },{
       name:"Mariooooo jackot",
       image:"/images/GameImage/TimeAndDeath.png",
@@ -33,7 +44,7 @@ const GameBoyScreen = (props: Props) => {
     }
   }
   return (
-    <div className='container'>
+    <div className='container-gameBoy'>
       {!currentGame &&
         <>
           {games.map((game,index)=>
@@ -44,13 +55,39 @@ const GameBoyScreen = (props: Props) => {
           <img className='previous' src={"/images/GameImage/play-svgrepo-com.svg"} style={{opacity:currentIndex==0?0.7:1}} onClick={()=>currentIndex!=0&&changeIndex(-1)}/>
         </>
       }
-      {currentGame && 
+      {currentGame && props.focus &&
       <>
-        <iframe height={'100%'} width={'100%'}  src={currentGame} />
+        <div className='full-screen' onClick={()=>setFullScreen(true)}>
+          <img src={"/images/icones/full-screen-svgrepo-com.png"} />
+        </div>
+
+          
+
+        {!fullScreen &&
+            <div style={{width:"100%",height:"100%"}}>
+              <iframe 
+              // style={{height:"100%",position: "absolute", border: "none"}} 
+              width={"100%"} height={"100%"} src={currentGame} />
+            </div>
+              
+        }
+        {fullScreen  && <Overlay>
+              <div style={{padding:"15vw", width:"100vw",height:"100vh", display:"flex",justifyContent:"center", alignItems:"center", background:"rgba(0, 0, 0, 0.52)"}}
+                  onClick={()=>setFullScreen(false)}
+                >
+            {/* <div style={{width:"100%",height:"100%"}}> */}
+              <iframe 
+              // style={{height:"100%",position: "absolute", border: "none"}} 
+              width={"80%"} height={"80%"} src={currentGame} />
+            {/* </div> */}
+
+              </div>
+            </Overlay>} 
         <div className='exit-game' onClick={()=>setCurrentGame(undefined)}>
           <img src={"/images/icones/arrow-square-left-svgrepo-com.svg"} />
           Exit Game
         </div>
+
         </>
       }
     </div>

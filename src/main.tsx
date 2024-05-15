@@ -1,15 +1,21 @@
 import { Canvas } from '@react-three/fiber'
 import { Leva } from 'leva'
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { ACESFilmicToneMapping, sRGBEncoding } from 'three'
 import { Scene } from './Scene'
 import './styles/main.css'
 import GameBoyScreen from './components/GameBoyScreen'
-
+import CameraScreen from './components/CameraScreen'
+import * as portals from 'react-reverse-portal';
+import { Environment, Loader } from '@react-three/drei'
+// import { VRButton, ARButton, XR, Controllers, Hands } from '@react-three/xr'
 function Main() {
+  
   return (
     <div className='main'>
+{/* <VRButton 
+/> */} 
       <Leva
         collapsed={false}
         oneLineLabels={false}
@@ -23,8 +29,10 @@ function Main() {
           },
         }}
       />
-        <Canvas
-
+      {/* <Loader> */}
+       <Canvas
+         
+        
         dpr={[1, 2]}
         gl={{
           antialias: true,
@@ -39,10 +47,24 @@ function Main() {
         }}
         shadows
       >
-        <Scene />
-        {/* <fog attach="fog" args={['pink', 5, 30]} /> */}
-      </Canvas>  
+        {/* <XR >//for vr, so kind of useless but I leave it here anyway */}
+        {/* <Controllers /> */}
+        {/* <Suspense> */}
+          <Scene /> 
+        {/* </Suspense> */}
+        
+
+        <Environment background files="/Environement/artist_workshop_1k.hdr" />
+        {/* </XR> */}
+      </Canvas>   
+      {/* </Loader> */}
       {/* <GameBoyScreen/> */}
+       {/* <CameraScreen focus/> */}
+       
+       <div id={"overlay"}>
+
+       </div>
+       
     </div>
   )
 }
