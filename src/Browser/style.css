@@ -1,0 +1,201 @@
+#computer-screen{
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/hill.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-color: black; */
+}
+#computer-screen.isOff{
+
+     background-color: rgb(36, 36, 36); 
+     background-image: none;
+}
+#task-bar{
+    border: #ffedef  solid;
+    border-width:4px 0 0 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 3.7rem;
+    background-color: #eb7b88;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    /* align-items: stretch; */
+     /* padding: 0.8rem;  */
+}
+.browser-shortcut,.power-off{
+    aspect-ratio: 1;
+    cursor: pointer;
+    /* height: 100%; */
+    padding: 0.5rem;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+
+}
+.browser-shortcut div,.power-off div{
+    background-image: url("/images/icones/firefox.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+
+}
+.browser-shortcut.reduce{
+    background-color: rgba(255, 255, 255, 0.42) ;
+}
+.power-off div{
+    background-image: url("/images/icones/turnOff.png");
+}
+.power-off{
+    /* margin-right: 1rem; */
+    border: #0000002b solid;
+    border-width:0 3px 0 0;
+}
+#browser-container{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+/* 
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; */
+    background-color: red;
+    align-items: stretch;
+    justify-content: stretch;
+    border: solid white 4px ;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+}
+#browser-container.small{
+    right: 20%;
+    left: 10%;
+    top: 10%;
+    bottom: 20%;
+}
+#top-bar{
+    background-color: #FF5D71;
+    height: 3rem;
+    left: 0;
+    right: 0;
+    border: solid white ;
+    border-width: 0px 0px 6px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    gap: 0.8rem;
+    align-items: center;
+    padding-right: 0.8rem;
+}
+#url-bar{
+    background-color: #D9D9D9;
+    padding: 0.5rem;
+    display: flex ;
+    flex-direction: row;
+    justify-content: start;
+    /* align-items: center; */
+    gap:0.7rem;
+    padding-left: 0.7rem;
+    font-size: 0.8rem;
+    align-items: stretch;
+    
+}
+#content-place{
+    overflow-y: scroll;
+    align-self: stretch;
+    position: relative;
+
+    background-color: #222222;
+
+}
+.top-button{
+    aspect-ratio: 1;
+    height: 70%;
+    background-color: #D9D9D9;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.top-button img{
+    width: 60%;
+}
+.url-button img{
+   max-width: 1.7rem;
+}
+.url-button{
+    aspect-ratio: 1;
+    /* height: 75%; */
+    /* background-color: #838383; */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#url-string{
+    background-color: #E1AEAE;
+    width: 40%;
+    color: #954242;
+
+    padding: 0.4rem;
+    font-weight: lighter;
+    margin-left: 2rem;
+    padding-left: 1.5rem;
+}
+#content-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+}
+#browser-logo{
+    font-weight: bolder;
+    color: white;
+    font-size: 2rem;
+}
+#search-bar{
+    background-color: #D9D9D9;
+    /* border: #1D1D1D solid 3px; */
+    border-radius: 4px;
+    color: #444444;
+    width: 40%;
+    padding:0.4rem;
+    padding-left: 0.9rem;
+    margin-left: 2rem;
+    font-weight: bold;
+}
+#result{
+
+    padding-left: 5rem;
+
+
+}
+#Website-Container{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 3rem;
+    padding-top: 2rem;
+}
+hr{
+
+    border-width: 2px;
+    margin-left: -60rem;
+    /* margin-right: -6rem; */
+    /* position: absolute; */
+    z-index: 3;
+    top: 3rem;
+    color: #353535;
+    background-color: #353535;
+}
+#number-of-site{
+    margin: 0;
+    opacity: 60%;
+}

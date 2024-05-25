@@ -17,17 +17,20 @@ const GameBoyScreen = (props: Props) => {
   },[props.focus])
   const games = [
     {
-      name:"Gravity wars",
-      image:"/images/GameImage/TimeAndDeath.png",
-      url:"https://i.simmer.io/@un_deux_trois/destination-nuages"
+      name:"Destination Nuages",
+      image:"/images/GameImage/nuage.png",
+      url:"https://i.simmer.io/@un_deux_trois/destination-nuages",
+      type:"game",
     },{
-      name:"Time & Death don't matter",
-      image:"/images/GameImage/TimeAndDeath.png",
-      url:"https://i.simmer.io/@un_deux_trois/vermins-out-of-my-casino"
+      name:"Vermins out of my casino !",
+      image:"/images/GameImage/Vermins.jpg",
+      url:"https://i.simmer.io/@un_deux_trois/vermins-out-of-my-casino",
+      type:"game",
     },{
-      name:"Mariooooo jackot",
-      image:"/images/GameImage/TimeAndDeath.png",
-      url:"https://i.simmer.io/@un_deux_trois/destination-nuages"
+      name:"Unfinnished Studio VR Game",
+      image:"/images/GameImage/Unfinnished.jpg",
+      url:"https://www.youtube.com/embed/FjgLgyAXBLA?si=43u_iRvcPxwyC6fZ",
+      type:"video",
     },
   ]
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -50,7 +53,7 @@ const GameBoyScreen = (props: Props) => {
           {games.map((game,index)=>
             <GameDisplay className={ index>currentIndex?"unseen":index<currentIndex?"seen":"current"} name={game.name} image={game.image} key={index}/>
           )}
-          <div className='play-button' onClick={()=>games[currentIndex].url && setCurrentGame(games[currentIndex].url)}>PLAY</div>
+          <div className='play-button' onClick={()=>games[currentIndex].url && setCurrentGame(games[currentIndex].url)}>{games[currentIndex].type==="game"?"PLAY":"VOIR DEMO"}</div>
           <img className='next' src={"/images/GameImage/play-svgrepo-com.svg"} style={{opacity:currentIndex==games.length-1?0.7:1}} onClick={()=>currentIndex<games.length-1&&changeIndex(1)}/>
           <img className='previous' src={"/images/GameImage/play-svgrepo-com.svg"} style={{opacity:currentIndex==0?0.7:1}} onClick={()=>currentIndex!=0&&changeIndex(-1)}/>
         </>

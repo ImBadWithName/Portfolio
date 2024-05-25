@@ -6,6 +6,7 @@ import * as THREE from "three";
 import React, { useMemo, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import { wrapText } from "./Page";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -15,8 +16,10 @@ type GLTFResult = GLTF & {
     ["post-it"]: THREE.MeshStandardMaterial;
   };
 };
-
-export function PostIt(props: JSX.IntrinsicElements["group"]) {
+type Props =JSX.IntrinsicElements["group"]&{
+  text?:string
+}
+export function PostIt(props:Props ) {
   const { nodes, materials } = useGLTF("/3dModels/Post-it.glb") as GLTFResult;
   const canvas = useMemo(() => {
     const canvasTemp = document.createElement("canvas");
@@ -25,13 +28,14 @@ export function PostIt(props: JSX.IntrinsicElements["group"]) {
     canvasTemp.height = size * 1.41
     const ctx = canvasTemp.getContext('2d')
     if(ctx) {
-      ctx.font = '30px Roboto'
-      ctx.fillStyle = "White";
-      ctx.fillRect(0, 0, canvasTemp.width, canvasTemp.height);
-      ctx.textAlign = 'center'
-      ctx.fillStyle = 'Black'
-      ctx.rotate(-Math.PI/2)
-      ctx.fillText("Acheter du pain", -size+40 , size/2  )
+       
+       ctx.font = '30px Baby Doll'
+       ctx.fillStyle = "White";
+       ctx.fillRect(0, 0, canvasTemp.width, canvasTemp.height);
+       ctx.textAlign = 'center'
+       ctx.fillStyle = 'Black'
+
+      props.text && wrapText(ctx,props.text,canvasTemp.width/2,canvasTemp.height/2,canvasTemp.width,30,"Baby Doll")
     }
     return canvasTemp
   }, [])

@@ -37,6 +37,7 @@ function CameraScreen(props: Props) {
   useEffect(()=>{
     if(!props.focus){
       setPause(true);
+      setFullScreen(false)
     }
   },[props.focus])
   const portalNode = React.useMemo(() => portals.createHtmlPortalNode(), []);

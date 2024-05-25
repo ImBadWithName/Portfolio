@@ -9,6 +9,7 @@ import GameBoyScreen from './components/GameBoyScreen'
 import CameraScreen from './components/CameraScreen'
 import * as portals from 'react-reverse-portal';
 import { Environment, Loader } from '@react-three/drei'
+import Browser from './Browser'
 // import { VRButton, ARButton, XR, Controllers, Hands } from '@react-three/xr'
 function Main() {
   
@@ -16,7 +17,7 @@ function Main() {
     <div className='main'>
 {/* <VRButton 
 /> */} 
-      <Leva
+      {/* <Leva
         collapsed={false}
         oneLineLabels={false}
         flat={true}
@@ -28,9 +29,9 @@ function Main() {
             root: '10px',
           },
         }}
-      />
-      {/* <Loader> */}
-       <Canvas
+      /> */}
+       <Loader/> 
+         <Canvas
          
         
         dpr={[1, 2]}
@@ -47,20 +48,15 @@ function Main() {
         }}
         shadows
       >
-        {/* <XR >//for vr, so kind of useless but I leave it here anyway */}
-        {/* <Controllers /> */}
-        {/* <Suspense> */}
+        {/* <group rotation-y={Math.PI}> */}
           <Scene /> 
-        {/* </Suspense> */}
-        
-
+          {/* </group> */}
         <Environment background files="/Environement/artist_workshop_1k.hdr" />
-        {/* </XR> */}
-      </Canvas>   
-      {/* </Loader> */}
+
+      </Canvas>  
       {/* <GameBoyScreen/> */}
        {/* <CameraScreen focus/> */}
-       
+        {/* <Browser canInteract/>  */}
        <div id={"overlay"}>
 
        </div>

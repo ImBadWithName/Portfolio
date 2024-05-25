@@ -1,24 +1,22 @@
-import { Bvh, CameraControls, Cloud, GizmoHelper, GizmoViewport, Line, OrbitControls, PivotControls, QuadraticBezierLine, SoftShadows, Text3D, TransformControls } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import { Bvh, CameraControls, Text3D, } from '@react-three/drei'
+
 import { useControls } from 'leva'
 import { Perf } from 'r3f-perf'
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { BoxGeometry, Fog, Group, Mesh, MeshBasicMaterial, MeshLambertMaterial, MeshNormalMaterial, Object3D, Quaternion, Vector3 } from 'three'
+import { BoxGeometry, Fog, Group, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, MeshNormalMaterial, MeshStandardMaterial, Object3D, Quaternion, SphereGeometry, Vector3 } from 'three'
 import { Cube } from './components/Cube'
 import { Plane } from './components/Plane'
 import { Sphere } from './components/Sphere'
 import {Computer} from './components/Computer'
 import Mouse from './components/Mouse'
 import { Keyboard } from './components/Keyboard'
-import SpringTest from './components/SpringTest'
-import TestCube from './components/Dodecahedron'
-import { FloppyDisk } from './components/FloppyDisk'
+
 import { Physics, RigidBody } from '@react-three/rapier'
 import Annotation from './components/Annotation'
 import CameraModel from './components/CameraModel'
-import WebSection from './components/WebSection/WebSection'
+
 import { GameBoy } from './components/GameBoy'
-import { Rope } from './components/Rope'
+
 import { Cable } from './components/Cable'
 import GameBoyScreen from './components/GameBoyScreen'
 import { Page } from './components/Page'
@@ -31,36 +29,59 @@ import { Mug } from './components/Mug'
 import { Lampes } from './components/Lampes'
 import { BookModel } from './components/BookModel'
 import { Desk } from './components/Desk'
+import Browser from './Browser'
+import { Cactus } from './components/Cactus'
+import FallingText from './components/FallingText'
+export const setCursor = (cursorType:string)=>{
+  document.body.style.cursor=cursorType;
+}
 type Props = {
 
 }
 function Scene(props: Props) {
-  const { performance } = useControls('Monitoring', {
-    performance: false,
-  })
+  // const { performance } = useControls('Monitoring', {
+  //   performance: false,
+  // })
   const handlePressEscape=(e:KeyboardEvent)=>{
     if(e.code==="Escape"){
       setView("default");
     }
 }
-const [cursor, setCursor] = useState("auto")
+
   const [view,setView] = useState("default");
   const cameraControlsRef = useRef<CameraControls>(null);
   const gambeBoyRef = useRef<Group>(null);
   const cameraRef = useRef<Group>(null);
   const carnetRef = useRef<Group>(null);
   const cvRef = useRef<Group>(null);
-  const [mouseRef,setMouseRef] = useState<Group>();;
+  const [mouseRef,setMouseRef] = useState<Group>();
   const [computerRef,setComputerRef] = useState<Group>();
-  useEffect(() => {
-    if(view==="default"){
-      document.body.style.cursor = cursor
-    } 
-    else {
-      document.body.style.cursor = "auto"
+  const posTemp:Vector3 = new Vector3()
+  const rotTemp:Vector3 = new Vector3()
+  const normalizeCameraControle = ()=>{
+    if(cameraControlsRef.current){
+        if(cameraControlsRef.current.azimuthAngle>Math.PI){
+          cameraControlsRef.current.azimuthAngle-=Math.PI*2
+        }
     }
-    return () => {document.body.style.cursor = 'auto'}
-  }, [cursor,view])
+  }
+  const handleDezoom = ()=>{
+    if(cameraControlsRef.current){
+      if(cameraControlsRef.current?.distance>2){
+        setView("default")
+        
+      }
+    } 
+  }
+  useEffect(()=>{
+    if(cameraControlsRef.current){
+      cameraControlsRef.current.addEventListener("control",()=>handleDezoom())
+      cameraControlsRef.current.addEventListener("update",()=>normalizeCameraControle())
+     
+    }
+    return ()=>{cameraControlsRef.current?.removeEventListener("control",()=>handleDezoom())}
+  },[cameraControlsRef])
+ 
   useEffect(()=>{
     window.addEventListener('keydown',(e)=>handlePressEscape(e))
     return ()=>{
@@ -71,10 +92,20 @@ const [cursor, setCursor] = useState("auto")
     console.log(view)
     switch (view) {
       case "default":
-        cameraControlsRef.current?.setLookAt(0, 2.8, 2,0,1,-0.2,true)
+        cameraControlsRef.current?.setLookAt(0, 2.8, 4.5,0,1,-0.2,true)
         break;
       case "computer":
-        cameraControlsRef.current?.setLookAt(1,1,1,1.5,1,-1,true)
+        if(computerRef){ 
+          // cameraControlsRef.current && cameraControlsRef.current.
+          posTemp.set(3,2.5,1)
+          rotTemp.set(2,2.5,0)
+            computerRef.localToWorld(posTemp)
+            computerRef.localToWorld(rotTemp)
+          cameraControlsRef.current?.setLookAt(
+            posTemp.x, posTemp.y, posTemp.z,
+            rotTemp.x,rotTemp.y,rotTemp.z,
+            true)
+        }
       break;
       case "camera":        
         if(cameraRef.current){ 
@@ -88,8 +119,8 @@ const [cursor, setCursor] = useState("auto")
       case "game":
         if(gambeBoyRef.current){ 
           cameraControlsRef.current?.setLookAt(
-            gambeBoyRef.current.position.x, gambeBoyRef.current.position.y+0.35, gambeBoyRef.current.position.z+1,
-            gambeBoyRef.current.position.x, gambeBoyRef.current.position.y+0.35, gambeBoyRef.current.position.z+0.6,
+            gambeBoyRef.current.position.x, gambeBoyRef.current.position.y+0.5, gambeBoyRef.current.position.z+0.7,
+            gambeBoyRef.current.position.x, gambeBoyRef.current.position.y+0.43, gambeBoyRef.current.position.z+0.5,
             true)
         }
       break;
@@ -112,26 +143,30 @@ const [cursor, setCursor] = useState("auto")
       default:
         break;
     }
+    
   },[view])
   return (
     <>
        {/* <hemisphereLight color="#ffffff" groundColor="#b9b9b9" position={[-7, 25, 13]} intensity={0.85} /> */}
-      {performance && <Perf position='top-left' />}
-      
-       <CameraControls 
-        makeDefault
-        ref={cameraControlsRef}
-        maxDistance={7}
-        dollyToCursor={false}
-        minPolarAngle={0.7}
-        maxPolarAngle={1.5}
-        maxAzimuthAngle={Math.PI/6}
-        minAzimuthAngle={-Math.PI/6}
-        boundaryFriction={100}
-        smoothTime={0.3}
-        draggingSmoothTime={0.5}
-        
-        /> 
+      {/* {performance && <Perf position='top-left' />} */}
+      {/* <group rotation-y={Math.PI}> */}
+        <CameraControls 
+          makeDefault
+          ref={cameraControlsRef}
+          maxDistance={7}
+          dollyToCursor={false}
+          minPolarAngle={0.7}
+          maxPolarAngle={1.7}
+          maxAzimuthAngle={0.4}
+          minAzimuthAngle={view==="computer"?-0.6:-0.4}
+          boundaryFriction={100}
+          smoothTime={0.3}
+          truckSpeed={0}
+          draggingSmoothTime={0.5}
+          // azimuthAngle={5.8}
+          
+          /> 
+        {/* </group> */}
 
       <directionalLight
         position={[-2, 2, 3]}
@@ -148,33 +183,38 @@ const [cursor, setCursor] = useState("auto")
 
        <ambientLight intensity={0.4} /> 
        <Desk rotation-y={-Math.PI/2} scale={0.75} position={[-0.5,-0.95,-2.5]} />
-      <CameraModel position={[-2, -0.7, -3]} scale={0.27} rotation={[0, Math.PI/6, 0]}
+      <CameraModel position={[-1.5, -0.7, -3]} scale={0.27} rotation={[0, Math.PI/6, 0]}
         onClick={()=>setView("camera")}
-        // onPointerOver={() => setCursor("pointer")}
-        // onPointerOut={() => setCursor("auto")}
+         onPointerOver={() => setCursor("pointer")}
+         onPointerOut={() => setCursor("auto")}
         ref={cameraRef}
       >
         <CameraScreen onClick={()=>{setView("camera")}} focus={view==="camera"}/>
       </CameraModel>
       <Mouse ref={setMouseRef as any} range={1.1}  position={[3,-0.95,-0.8]} rotation={[0, -Math.PI/2, 0]} scale={0.36}/>
 
-      <Cv position={[-1,1,-4.5]} scale={0.6} onClick={()=>setView("cv")} ref={cvRef} focus={view==="cv"}/>
-      <PostIt position={[0,0,-4.49]} scale={0.2} rotation-z={Math.PI/32}/>
+      <Cv position={[-1,1.6,-4.5]}          
+      onPointerOver={() => setCursor("pointer")}
+         onPointerOut={() => setCursor("auto")} 
+         scale={0.6} onClick={()=>setView("cv")} ref={cvRef} focus={view==="cv"}
+         />
+      <PostIt position={[0,0,-4.49]} scale={0.2} rotation-z={Math.PI/32} text='Penser à acheter du pain'/>
+      <PostIt position={[0.3,0.7,-4.49]} scale={0.2} rotation-z={-Math.PI/32} text='Presque à cours de post-il :)'/>
       <group position={[1.8, -1, -2.61]} scale={0.8} rotation={[0, -Math.PI/1.5, 0]} 
         
         >
         
         <Computer ref={setComputerRef  as any} 
           onClick={(e)=>{ e.stopPropagation(); setView("computer")}}
-          // onPointerOver={() =>cursor!=="pointer" && setCursor("pointer")}
-          // onPointerOut={() => setCursor("auto")}
+          onCursorOver={(isHover:boolean) =>isHover? document.body.style.cursor="pointer":document.body.style.cursor="default"}
+          
         >
-          <div style={{cursor:view=="default"?"pointer":"default"}} onClick={view=="default"?()=>{setView("computer")}:undefined}>
-            <WebSection canInteract={view==="computer"}  style={{height:720, width:1080,overflow:"scroll"}}/>
+          <div style={{cursor:view=="default"?"pointer":"default"}} onClick={view=="default"?(e)=>{setView("computer")}:undefined}>
+            <Browser canInteract={view==="computer"}  style={{height:720, width:1080,overflow:"scroll"}}/>
           </div>
         </Computer>
-        
-        <Annotation text={"My web stuff"} fontSize={20} position={[0,4,2.7]}/>
+        <Cactus scale={0.03} position={[0.5,3.42,-0.5]}/>
+        {/* <Annotation text={"My web stuff"} fontSize={20} position={[0,4,2.7]}/> */}
         <Keyboard 
           position={[2,0.1,0]} 
           rotation={[0,Math.PI/12,0]}
@@ -182,61 +222,63 @@ const [cursor, setCursor] = useState("auto")
       </group>
         <mesh position={[0,5,-5]}>
           <boxGeometry args={[70,20,1]} />
-          <meshNormalMaterial>
-            <canvasTexture />
-          </meshNormalMaterial>
+          <meshStandardMaterial color={"#F01F67"}/>
+
         </mesh>
         <mesh position={[0,-5,-0]}>
           <boxGeometry args={[70,1,20]} />
-          <meshNormalMaterial>
-            <canvasTexture />
-          </meshNormalMaterial>
+          <meshStandardMaterial color={"#D085F0"}/>
+
         </mesh>
-         <group position={[-4,2,-4.6]}>
-          <Text3D position-y={0.7} font={"/Font/Arvo_Bold.json"} size={0.4} height={0.3} >
-            François
-            <meshStandardMaterial color={"white"} />
-          </Text3D>
-          <Text3D font={"/Font/Arvo_Bold.json"} size={0.4} height={0.3} >
-            Crouy
-            <meshStandardMaterial color={"white"} />
-          </Text3D>
-        </group> 
-         {/* <PivotControls 
-        onDrag={(e)=>{
-          const position = new Vector3()
-          const scale = new Vector3()
-          const quaternion = new Quaternion()
-          e.decompose(position, quaternion, scale)
-          console.log("position={[",[position.x,position.y,position.z].toLocaleString(),"]}")
-          console.log("rotation={[",[position.x,position.y,position.z].toLocaleString(),"]}")
-          console.log("scale={[",[scale.x,scale.y,scale.z].toLocaleString(),"]}")
-          }} annotations visible={false}> */}
+        
+       
+
+        
            <GameBoy onClick={()=>{setView('game')}} scale={0.3} 
-            // onPointerOver={() => setCursor("pointer")}
-            // onPointerOut={() => setCursor("auto")}
-            position={[-3,1,-3]}
+             onPointerOver={() => setCursor("pointer")}
+            onPointerOut={() => setCursor("auto")}
+            position={[-3,-0.5,-3]}
+            rotation-x={-0.3}
             ref={gambeBoyRef}
           >
               <div style={{width:"1440px", height:"1024px",backgroundColor:"black",borderRadius:"60px",overflow:"hidden"}}>
                 <GameBoyScreen focus = {view =="game"}/>
                </div>
             </GameBoy>  
-                   {/* </PivotControls>   */}
+
           <Carnet ref={carnetRef} 
             onClick={(e)=>{setView("carnet")}} 
             focus={view==="carnet"} 
             scale={[0.5,0.5,0.5]} 
             rotation-y={Math.PI/1.7} 
             position={[-2,-0.68,-1.5]}
+            onPointerOver={() => setCursor("pointer")}
+            onPointerOut={() => setCursor("auto")}
           />
           <Mug scale={0.6} rotation={[0, -2.07, 0]} position={[-0.5,-0.71,-1]}/>
-          <Lampes scale={0.5} position={[-3,-0.87,-3]} rotation-y={-Math.PI*2/3}/>
+          <Lampes scale={0.5} position={[-3,-0.87,-3.4]} rotation-y={-Math.PI*2/3}/>
         <Physics  >
-         <Suspense> 
-          <RigidBody includeInvisible  type="fixed"> 
-            <Plane />
-          </RigidBody> 
+         <Suspense>
+         <group position={[-4.3,1.3,-4.57]} scale={0.8}>
+         <FallingText text='Portfolio' position-y={1.1} spacing={0.35} kerning={[0,0,0,-0.27,-0.27,0,-0.27,-0.27]} font={"/Font/Arvo_Bold.json"} size={0.4} height={0.3} >
+            <meshStandardMaterial color={"black"} />
+          </FallingText>
+          <FallingText text={"François"} position-y={0.5} kerning={[0,-0.2,0,0.1,0,0,-0.27]} spacing={0.365} font={"/Font/Arvo_Bold.json"} size={0.4} height={0.3} >
+            
+            <meshStandardMaterial color={"white"} />
+          </FallingText>
+          <FallingText text={"Crouy-Chanel"} spacing={0.235} kerning={[0.09,-0.1,-0.05,0,0,-0.1,0.05,0,-0.05,0.05,-0.05]} font={"/Font/Arvo_Bold.json"} size={0.255} height={0.3} >
+            
+            <meshStandardMaterial color={"white"} />
+          </FallingText>
+        </group> 
+          {/* <FallingText position={[0,2,0]} text='FRapqqi' font={"/Font/Arvo_Bold.json"} size={0.4} height={0.3}>
+          <meshStandardMaterial color={"white"} />
+            </FallingText>  */}
+          
+            <Plane size={[7.5, 0.2, 6.3]} position={[0, -1.05, -3.1]} />
+            <Plane size={[20, 1, 10]} position={[0, -5, -3.1]} />
+            <Plane size={[20, 10, 1]} position={[0, 0, -5]} />
           <Suspense> 
             {computerRef && mouseRef &&
           <Cable 

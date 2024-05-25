@@ -1,3 +1,8 @@
+
+@font-face {
+  font-family: "Baby Doll" ;
+  src: url('/Font/Baby\ Doll.otf');
+}
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

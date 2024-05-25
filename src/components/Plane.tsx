@@ -1,13 +1,24 @@
-function Plane() {
+import { Vector3 } from "@react-three/fiber"
+import { RigidBody } from "@react-three/rapier"
+
+type Props ={
+  position?:Vector3
+ size?:Vector3
+}
+function Plane(props:Props) {
+
   return (
-    <mesh
-      position={[0, -1.05, -2.1]}
-      visible={false}
-      receiveShadow
-    >
-      <boxGeometry args={[8, 0.2, 4.8]} />
+    <RigidBody includeInvisible  type="fixed"> 
+      <mesh
+        position={props.position}
+        visible={false}
+        receiveShadow
+        scale={props.size}
+      >
+        <boxGeometry />
 
     </mesh>
+    </RigidBody> 
   )
 }
 

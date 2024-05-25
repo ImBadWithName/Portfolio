@@ -8,6 +8,7 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { Pin } from './Pin';
 import Overlay from './Overlay';
+import { flattenJSON } from 'three/src/animation/AnimationUtils';
 
 type Props = JSX.IntrinsicElements["group"] & {
     focus:boolean 
@@ -27,8 +28,9 @@ const Cv=forwardRef<THREE.Group, Props>((props, ref) =>{
     const imageTexture = useLoader(TextureLoader,"/images/Cv.png");
     const [fullScreen,setFullScreen] = useState(false);
     useEffect(()=>{
+      console.log("exit full screen")
       setFullScreen(false)
-    },[focus])
+    },[props.focus])
     const url = "/documents/Cv.pdf"
     const downloadCV=()=>{
         const a = document.createElement('a')
@@ -39,9 +41,10 @@ const Cv=forwardRef<THREE.Group, Props>((props, ref) =>{
         document.body.removeChild(a)
       }
   return (
-    <group ref={ref} {...props} dispose={null} onClick={props.focus?()=>setFullScreen(true):props.onClick}>
+    <group ref={ref} {...props} dispose={null} >
 
         <mesh
+        onClick={props.focus?()=>setFullScreen(true):props.onClick}
           name="Plane"
           castShadow
           receiveShadow
@@ -55,9 +58,13 @@ const Cv=forwardRef<THREE.Group, Props>((props, ref) =>{
       {fullScreen &&
         <Html>
           <Overlay>
-              <div style={{padding:"15vw", width:"100vw",height:"100vh", display:"flex",justifyContent:"center", alignItems:"center", background:"rgba(0, 0, 0, 0.52)"}}
+              <div style={{padding:"15vw", width:"100vw",height:"100vh", display:"flex",justifyContent:"center", alignItems:"center", background:"rgba(0, 0, 0, 0.52)",flexDirection:"column"}}
                onClick={()=>setFullScreen(false)}>
                 <img style={{height:"80vh"}} src="/images/Cv.png" alt="un cv de qualité" />
+                <div onClick={()=>downloadCV()} id="donwloadButton" style={{height:"2rem",display:"flex", alignItems:"center",gap:"0.7rem",margin:"1rem",cursor:"pointer"}}>
+                  <p>Download</p>
+                  <img src="/images/icones/download-minimalistic-svgrepo-com.png" alt="" style={{height:"100%"}}/>
+                </div>
               </div>
           </Overlay>
         </Html>
@@ -69,4 +76,4 @@ const Cv=forwardRef<THREE.Group, Props>((props, ref) =>{
 })
 
 export default Cv
-useGLTF.preload("/3dModels/CV.glb");
+useGLTF.preload("./3dModels/CV.glb");

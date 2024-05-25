@@ -34,9 +34,9 @@ const Mouse = forwardRef<THREE.Group, Props>((props, ref) => {
             // })
             if(mouseRef.current){
                 
-                mouseRef.current?.position.setX(e.screenX/window.innerWidth*props.range)
+                mouseRef.current?.position.setZ(-e.screenX/window.innerWidth*props.range)
                 //@ts-ignore
-                mouseRef.current?.position.setZ(e.screenY/window.innerHeight*props.range)
+                mouseRef.current?.position.setX(e.screenY/window.innerHeight*props.range)
             }
         })
         return;

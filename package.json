@@ -15,6 +15,7 @@
     "@react-three/rapier": "^1.1.1",
     "@react-three/xr": "^5.7.1",
     "@types/three": "^0.152.1",
+    "detect-kerning": "^2.1.2",
     "leva": "^0.9.34",
     "r3f-perf": "^7.1.2",
     "react": "^18.2.0",

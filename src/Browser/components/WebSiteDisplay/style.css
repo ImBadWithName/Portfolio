@@ -1,0 +1,27 @@
+.all-text{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    justify-content: start;
+    cursor: pointer;
+}
+.site-url{
+    text-decoration: underline;
+    margin: 0;
+    font-weight: lighter;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+.site-title{
+    color : #2E34AF;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+.site-title.visited{
+    color : #7d00d7;
+}
+.site-desc{
+    margin: 0;
+    font-size: 1rem;
+}
